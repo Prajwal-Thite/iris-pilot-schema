@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    container_name: iris_pilot_db
+    environment:
+      POSTGRES_USER: iris
+      POSTGRES_PASSWORD: iris
+      POSTGRES_DB: iris_pilot
+    ports:
+      - "5433:5432"
+    volumes:
+      - iris_pilot_data:/var/lib/postgresql/data
+
+volumes:
+  iris_pilot_data:

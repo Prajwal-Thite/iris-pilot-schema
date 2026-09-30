@@ -1,0 +1,83 @@
+erDiagram
+    SOURCE_RUN ||--o{ PARCEL : "source_id"
+    SOURCE_RUN ||--o{ SUBSTATION : "source_id"
+    SOURCE_RUN ||--o{ PEATLAND : "source_id"
+    SOURCE_RUN ||--o{ SCREENING_LAYER : "source_id"
+    SOURCE_RUN ||--o{ EVIDENCE : "source_id"
+    PARCEL ||--o{ SCREENING_LAYER : "parcel_id"
+    PARCEL ||--o{ EVIDENCE : "entity_id (entity_type='parcel')"
+    SCREENING_LAYER ||--o{ EVIDENCE : "entity_id (entity_type='screening_layer')"
+
+    SOURCE_RUN {
+        bigint source_id PK
+        text source_name
+        date source_date
+        text country_code
+        timestamptz retrieved_at
+        timestamptz created_at
+    }
+
+    PARCEL {
+        bigint parcel_id PK
+        text country_code
+        text region_code
+        text external_parcel_ref
+        geometry_multipolygon_4326 geom
+        numeric area_m2
+        bigint source_id FK
+        date source_date
+        timestamptz created_at
+    }
+
+    SUBSTATION {
+        bigint substation_id PK
+        text country_code
+        text region_code
+        text external_substation_ref
+        text name
+        numeric voltage_kv
+        geometry_point_4326 geom
+        bigint source_id FK
+        date source_date
+        timestamptz created_at
+    }
+
+    PEATLAND {
+        bigint peatland_id PK
+        text country_code
+        text region_code
+        text external_peatland_ref
+        geometry_multipolygon_4326 geom
+        text peat_depth_class
+        numeric eco_point_factor
+        bigint source_id FK
+        date source_date
+        timestamptz created_at
+    }
+
+    SCREENING_LAYER {
+        bigint screening_id PK
+        text country_code
+        text region_code
+        bigint parcel_id FK
+        text vertical
+        text metric_name
+        numeric metric_value
+        geometry_geometry_4326 geom
+        bigint source_id FK
+        date source_date
+        timestamptz created_at
+    }
+
+    EVIDENCE {
+        bigint evidence_id PK
+        text country_code
+        text region_code
+        text entity_type
+        bigint entity_id
+        text note
+        numeric confidence
+        bigint source_id FK
+        date source_date
+        timestamptz created_at
+    }
